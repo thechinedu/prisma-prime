@@ -1,3 +1,3 @@
 # Prismr
 
-Prisma schema definition for JavaScript/TypeScript.
+Schema definition for Prisma in JavaScript/TypeScript.

@@ -1,17 +1,14 @@
-import { Modifiers } from '../interfaces';
-import generateFieldSchema from '../utils/generateFieldSchema';
-import { _fields } from '../model/fields';
+import { Fields } from '../interfaces';
 
-const boolean = (name: string, modifiers?: Modifiers) => {
-  const fieldType = 'Decimal';
+const raw = (fields: Fields, fieldSchema: string) => {
+  const [name, fieldType] = fieldSchema.split(' ');
 
-  Object.assign(_fields, {
+  Object.assign(fields, {
     [name]: {
       type: fieldType,
-      ...modifiers,
-      _fieldSchema: generateFieldSchema(name, fieldType, modifiers),
+      fieldSchema: fieldSchema,
     },
   });
 };
 
-export default boolean;
+export default raw;

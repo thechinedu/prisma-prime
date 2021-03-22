@@ -17,7 +17,7 @@ export type FieldTypes = {
 export type Fields = {
   [key: string]: Modifiers & {
     type: string;
-    _fieldSchema: string;
+    fieldSchema: string;
   };
 };
 

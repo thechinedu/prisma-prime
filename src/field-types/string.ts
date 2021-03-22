@@ -1,15 +1,14 @@
-import { Modifiers } from '../interfaces';
+import { Fields, Modifiers } from '../interfaces';
 import generateFieldSchema from '../utils/generateFieldSchema';
-import { _fields } from '../model/fields';
 
-const string = (name: string, modifiers?: Modifiers) => {
+const string = (fields: Fields, name: string, modifiers?: Modifiers) => {
   const fieldType = 'String';
 
-  Object.assign(_fields, {
+  Object.assign(fields, {
     [name]: {
       type: fieldType,
       ...modifiers,
-      _fieldSchema: generateFieldSchema(name, fieldType, modifiers),
+      fieldSchema: generateFieldSchema(name, fieldType, modifiers),
     },
   });
 };

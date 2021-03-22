@@ -1,12 +1,12 @@
-import { FieldTypes } from '../interfaces';
-import string from './string';
-import boolean from './boolean';
-import raw from './raw';
+import { Fields, FieldTypes } from '../interfaces';
+import stringImpl from './string';
+import booleanImpl from './boolean';
+import rawImpl from './raw';
 
-const populateFields = (): FieldTypes => ({
-  boolean,
-  string,
-  raw,
+const populateFields = (fields: Fields): FieldTypes => ({
+  boolean: (name, modifiers) => booleanImpl(fields, name, modifiers),
+  string: (name, modifiers) => stringImpl(fields, name, modifiers),
+  raw: fieldSchema => rawImpl(fields, fieldSchema),
 });
 
 export default populateFields;

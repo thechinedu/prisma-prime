@@ -1,7 +1,11 @@
 import { Fields, Modifiers } from '../interfaces';
-import generateFieldSchema from '../utils/generateFieldSchema';
+import { generateFieldSchema } from '../utils';
 
-const decimal = (fields: Fields, name: string, modifiers?: Modifiers) => {
+export const decimalImpl = (
+  fields: Fields,
+  name: string,
+  modifiers?: Modifiers
+) => {
   const fieldType = 'Decimal';
 
   Object.assign(fields, {
@@ -12,5 +16,3 @@ const decimal = (fields: Fields, name: string, modifiers?: Modifiers) => {
     },
   });
 };
-
-export default decimal;

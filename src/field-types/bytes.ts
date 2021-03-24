@@ -1,7 +1,11 @@
 import { Fields, Modifiers } from '../interfaces';
-import generateFieldSchema from '../utils/generateFieldSchema';
+import { generateFieldSchema } from '../utils';
 
-const bytes = (fields: Fields, name: string, modifiers?: Modifiers) => {
+export const bytesImpl = (
+  fields: Fields,
+  name: string,
+  modifiers?: Modifiers
+) => {
   const fieldType = 'Bytes';
 
   Object.assign(fields, {
@@ -12,5 +16,3 @@ const bytes = (fields: Fields, name: string, modifiers?: Modifiers) => {
     },
   });
 };
-
-export default bytes;

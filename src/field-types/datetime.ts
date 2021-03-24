@@ -1,7 +1,11 @@
 import { Fields, Modifiers } from '../interfaces';
-import generateFieldSchema from '../utils/generateFieldSchema';
+import { generateFieldSchema } from '../utils';
 
-const datetime = (fields: Fields, name: string, modifiers?: Modifiers) => {
+export const datetimeImpl = (
+  fields: Fields,
+  name: string,
+  modifiers?: Modifiers
+) => {
   const fieldType = 'DateTime';
 
   Object.assign(fields, {
@@ -12,5 +16,3 @@ const datetime = (fields: Fields, name: string, modifiers?: Modifiers) => {
     },
   });
 };
-
-export default datetime;

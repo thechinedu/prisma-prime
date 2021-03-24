@@ -1,7 +1,4 @@
-const optional = (fieldSchema: string) => {
-  const [fieldName, fieldType] = fieldSchema.split(' ');
+import { generateModifier } from '../utils';
 
-  return `${fieldName} ${fieldType}?`;
-};
-
-export default optional;
+export const optional = (fieldSchema: string) =>
+  generateModifier(fieldSchema, 'optional');

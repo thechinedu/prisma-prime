@@ -1,14 +1,11 @@
 import { Fields } from '../interfaces';
 
-const raw = (fields: Fields, fieldSchema: string) => {
-  const [name, fieldType] = fieldSchema.split(' ');
+export const rawImpl = (fields: Fields, fieldSchema: string) => {
+  const fieldName = Symbol('raw');
 
   Object.assign(fields, {
-    [name]: {
-      type: fieldType,
+    [fieldName]: {
       fieldSchema: fieldSchema,
     },
   });
 };
-
-export default raw;

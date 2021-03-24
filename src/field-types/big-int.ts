@@ -1,7 +1,11 @@
 import { Fields, Modifiers } from '../interfaces';
-import generateFieldSchema from '../utils/generateFieldSchema';
+import { generateFieldSchema } from '../utils';
 
-const bigInt = (fields: Fields, name: string, modifiers?: Modifiers) => {
+export const bigIntImpl = (
+  fields: Fields,
+  name: string,
+  modifiers?: Modifiers
+) => {
   const fieldType = 'BigInt';
 
   Object.assign(fields, {
@@ -12,5 +16,3 @@ const bigInt = (fields: Fields, name: string, modifiers?: Modifiers) => {
     },
   });
 };
-
-export default bigInt;

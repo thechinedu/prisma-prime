@@ -1,7 +1,9 @@
-import optional from './optional';
+import { optional } from './optional';
+import { primary } from './primary';
+import { unique } from './unique';
 
-const fieldModifiers = {
+export const fieldModifiers = {
   optional,
+  primary,
+  unique,
 };
-
-export default fieldModifiers;

@@ -1,7 +1,11 @@
 import { Fields, Modifiers } from '../interfaces';
-import generateFieldSchema from '../utils/generateFieldSchema';
+import { generateFieldSchema } from '../utils';
 
-const float = (fields: Fields, name: string, modifiers?: Modifiers) => {
+export const floatImpl = (
+  fields: Fields,
+  name: string,
+  modifiers?: Modifiers
+) => {
   const fieldType = 'Float';
 
   Object.assign(fields, {
@@ -12,5 +16,3 @@ const float = (fields: Fields, name: string, modifiers?: Modifiers) => {
     },
   });
 };
-
-export default float;

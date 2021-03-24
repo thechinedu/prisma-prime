@@ -1,7 +1,11 @@
 import { Fields, Modifiers } from '../interfaces';
-import generateFieldSchema from '../utils/generateFieldSchema';
+import { generateFieldSchema } from '../utils';
 
-const json = (fields: Fields, name: string, modifiers?: Modifiers) => {
+export const jsonImpl = (
+  fields: Fields,
+  name: string,
+  modifiers?: Modifiers
+) => {
   const fieldType = 'Json';
 
   Object.assign(fields, {
@@ -12,5 +16,3 @@ const json = (fields: Fields, name: string, modifiers?: Modifiers) => {
     },
   });
 };
-
-export default json;

@@ -1,7 +1,7 @@
 import { Modifiers, ModifierKey } from '../interfaces';
-import fieldModifiers from '../field-modifiers';
+import { fieldModifiers } from '../field-modifiers';
 
-const generateFieldSchema = (
+export const generateFieldSchema = (
   name: string,
   type: string,
   modifiers: Modifiers = {}
@@ -18,5 +18,3 @@ const generateFieldSchema = (
 
   return res;
 };
-
-export default generateFieldSchema;

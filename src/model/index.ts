@@ -1,5 +1,5 @@
 import { ModelDefinition, ModelFunc } from '../interfaces';
-import populateFields from '../field-types';
+import { populateFields } from '../field-types';
 
 export const model: ModelFunc = (name: string, definition: ModelDefinition) => {
   const fields = {};

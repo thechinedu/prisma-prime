@@ -43,8 +43,7 @@ const Comment = model('Comment', t => {
 const schema = generateSchema({
   datasource: {
     provider: 'postgresql',
-    url:
-      process.env.DATABASE_URL || 'postgresql://user@localhost:5432/chat_app',
+    url: process.env.DATABASE_URL || 'postgresql://user@localhost:5432/prismr',
   },
   generator: {
     provider: 'prisma-client-js',

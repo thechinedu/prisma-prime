@@ -1,1 +1,2 @@
-export { default as generateFieldSchema } from './generateFieldSchema';
+export { generateFieldSchema } from './generateFieldSchema';
+export { generateModifier } from './generateModifier';

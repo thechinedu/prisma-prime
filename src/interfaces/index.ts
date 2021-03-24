@@ -1,6 +1,16 @@
-export type Modifiers = Partial<{
-  optional: boolean;
-}>;
+type PrimaryModifier = {
+  primary?: true;
+  optional?: false;
+  unique?: false;
+};
+
+type OptionalModifier = {
+  optional?: true;
+  primary?: false;
+  unique?: boolean;
+};
+
+export type Modifiers = PrimaryModifier | OptionalModifier;
 
 export type ModifierKey = keyof Modifiers;
 
@@ -8,10 +18,17 @@ export type FieldType = (name: string, modifiers?: Modifiers) => void;
 export type RawType = (rawString: string) => void;
 
 export type FieldTypes = {
-  string: FieldType;
+  bigInt: FieldType;
   boolean: FieldType;
+  bytes: FieldType;
+  datetime: FieldType;
+  decimal: FieldType;
+  float: FieldType;
+  int: FieldType;
+  json: FieldType;
   /** The raw type allows directly specifying a schema field in the PSL format */
   raw: RawType;
+  string: FieldType;
 };
 
 export type Fields = {

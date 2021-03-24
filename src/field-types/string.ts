@@ -1,7 +1,11 @@
 import { Fields, Modifiers } from '../interfaces';
-import generateFieldSchema from '../utils/generateFieldSchema';
+import { generateFieldSchema } from '../utils';
 
-const string = (fields: Fields, name: string, modifiers?: Modifiers) => {
+export const stringImpl = (
+  fields: Fields,
+  name: string,
+  modifiers?: Modifiers
+) => {
   const fieldType = 'String';
 
   Object.assign(fields, {
@@ -12,5 +16,3 @@ const string = (fields: Fields, name: string, modifiers?: Modifiers) => {
     },
   });
 };
-
-export default string;

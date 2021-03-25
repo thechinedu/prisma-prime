@@ -1,6 +1,6 @@
-# Prismr
+# Prisma Prime
 
-Schema definition for Prisma in JavaScript/TypeScript. Prismr allows you to programmatically generate your Prisma schema using TypeScript or JavaScript.
+Schema definition for Prisma in JavaScript/TypeScript. Prisma Prime allows you to programmatically generate your Prisma schema using TypeScript or JavaScript.
 
 ## Status
 

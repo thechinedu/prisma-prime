@@ -16,41 +16,36 @@ const modifierKeyToSchemaAttribute: ModifierMap = {
   unique: '@unique',
 };
 
-const optionalModifier = ({
-  fieldName,
-  fieldType,
-  existingModifiers,
-}: SchemaRecord) => `${fieldName} ${fieldType}? ${existingModifiers.join(' ')}`;
+const typeModifiers = {
+  optional: (type: string) => `${type}?`,
+  list: (type: string) => `${type}[]`,
+  default: (type: string) => type,
+};
 
-const listModifier = ({
+const modifier = ({
   fieldName,
-  fieldType,
-  existingModifiers,
-}: SchemaRecord) =>
-  `${fieldName} ${fieldType}[] ${existingModifiers.join(' ')}`;
-
-const defaultModifier = ({
-  fieldName,
-  fieldType,
-  existingModifiers,
+  fieldType: type,
+  existingModifiers: additionalModifiers,
   key,
-}: SchemaRecord) =>
-  `${fieldName} ${fieldType} ${existingModifiers.join(' ')} ${
-    modifierKeyToSchemaAttribute[key as keyof ModifierMap]
-  }`;
+}: SchemaRecord) => {
+  const typeModifierKey = key as keyof typeof typeModifiers;
+  const typeModifier = typeModifiers[typeModifierKey]
+    ? typeModifiers[typeModifierKey]
+    : typeModifiers.default;
+  const fieldType = typeModifier(type);
+  const existingModifiers = additionalModifiers.length
+    ? ` ${additionalModifiers.join(' ')}`
+    : '';
+  const modifierMapKey = key as keyof ModifierMap;
+  const schemaAttribute = modifierKeyToSchemaAttribute[modifierMapKey]
+    ? ` ${modifierKeyToSchemaAttribute[modifierMapKey]}`
+    : '';
 
-const modifiers = {
-  optional: optionalModifier,
-  list: listModifier,
-  default: defaultModifier,
+  return `${fieldName} ${fieldType}${existingModifiers}${schemaAttribute}`;
 };
 
 export const generateModifier = (fieldSchema: string, key: ModifierKey) => {
   const [fieldName, fieldType, ...existingModifiers] = fieldSchema.split(' ');
-  const modifierKey = key as keyof typeof modifiers;
-  const modifierFn = modifiers[modifierKey]
-    ? modifiers[modifierKey]
-    : modifiers.default;
 
-  return modifierFn({ fieldName, fieldType, existingModifiers, key });
+  return modifier({ fieldName, fieldType, existingModifiers, key });
 };

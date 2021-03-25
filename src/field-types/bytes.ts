@@ -1,4 +1,5 @@
 import { Fields, Modifiers } from '../interfaces';
+import { fieldModifiers } from '../field-modifiers';
 import { generateFieldSchema } from '../utils';
 
 export const bytesImpl = (
@@ -12,7 +13,11 @@ export const bytesImpl = (
     [name]: {
       type: fieldType,
       ...modifiers,
-      fieldSchema: generateFieldSchema(name, fieldType, modifiers),
+      fieldSchema: generateFieldSchema(fieldModifiers)(
+        name,
+        fieldType,
+        modifiers
+      ),
     },
   });
 };

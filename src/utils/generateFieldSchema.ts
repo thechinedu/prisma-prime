@@ -1,11 +1,8 @@
 import { Modifiers, ModifierKey } from '../interfaces';
-import { fieldModifiers } from '../field-modifiers';
 
 export const generateFieldSchema = (
-  name: string,
-  type: string,
-  modifiers: Modifiers = {}
-) => {
+  fieldModifiers: { [key in ModifierKey]: (fieldSchema: string) => string }
+) => (name: string, type: string, modifiers: Modifiers = {}) => {
   let res = `${name} ${type}`;
 
   for (let [key, value] of Object.entries(modifiers)) {

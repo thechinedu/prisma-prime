@@ -1,4 +1,5 @@
 import { Fields, Modifiers } from '../interfaces';
+import { fieldModifiers } from '../field-modifiers';
 import { generateFieldSchema } from '../utils';
 
 export const booleanImpl = (
@@ -12,7 +13,11 @@ export const booleanImpl = (
     [name]: {
       type: fieldType,
       ...modifiers,
-      fieldSchema: generateFieldSchema(name, fieldType, modifiers),
+      fieldSchema: generateFieldSchema(fieldModifiers)(
+        name,
+        fieldType,
+        modifiers
+      ),
     },
   });
 };

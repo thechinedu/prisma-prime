@@ -1,20 +1,48 @@
-type PrimaryModifier = {
-  primary?: true;
-  optional?: false;
-  unique?: false;
-};
+// https://github.com/krzkaczor/ts-essentials/blob/master/lib/types.ts#L346
+type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+
+// https://github.com/krzkaczor/ts-essentials/blob/master/lib/types.ts#L349
+type XOR<T, U> = T | U extends object
+  ? (Without<T, U> & U) | (Without<U, T> & T)
+  : T | U;
+
+export enum Defaults {
+  autoincrement = 'autoincrement',
+  dbgenerated = 'dbgenerated',
+  cuid = 'cuid',
+  uuid = 'uuid',
+  now = 'now',
+}
 
 type OptionalModifier = {
+  /**
+   * When set to true, the primary modifier should be false or not defined
+   */
   optional?: true;
-  primary?: false;
+  /**
+   * When set to true, the primary modifier should be false or not defined
+   */
   unique?: boolean;
+};
+
+type PrimaryModifier = {
+  /**
+   * When set to true, the optional and unique modifier should be false or not defined
+   */
+  primary?: true;
+  unique?: false;
+  optional?: false;
+};
+
+export type IntModifiers = XOR<PrimaryModifier, OptionalModifier> & {
+  default?: number | Defaults.autoincrement | Defaults.dbgenerated;
 };
 
 export type Modifiers = PrimaryModifier | OptionalModifier;
 
 export type ModifierKey = keyof Modifiers;
 
-export type FieldType = (name: string, modifiers?: Modifiers) => void;
+export type FieldType<M = Modifiers> = (name: string, modifiers?: M) => void;
 export type RawType = (rawString: string) => void;
 
 export type FieldTypes = {
@@ -24,7 +52,7 @@ export type FieldTypes = {
   datetime: FieldType;
   decimal: FieldType;
   float: FieldType;
-  int: FieldType;
+  int: FieldType<IntModifiers>;
   json: FieldType;
   /** The raw type allows directly specifying a schema field in the PSL format */
   raw: RawType;

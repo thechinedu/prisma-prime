@@ -1,5 +1,5 @@
 {
-  "name": "prismr",
+  "name": "prisma-prime",
   "version": "0.1.0",
   "author": "Chinedu Daniel",
   "description": "Prisma schema definition for JavaScript/TypeScript",
@@ -34,14 +34,14 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "module": "dist/prismr.esm.js",
+  "module": "dist/prisma-prime.esm.js",
   "size-limit": [
     {
-      "path": "dist/prismr.cjs.production.min.js",
+      "path": "dist/prisma-prime.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/prismr.esm.js",
+      "path": "dist/prisma-prime.esm.js",
       "limit": "10 KB"
     }
   ],

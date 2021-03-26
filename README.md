@@ -11,7 +11,7 @@ This project is still in active development and not recommended for use in a pro
 Example:
 
 ```ts
-import { model, generateSchema } from 'prismr';
+import { model, generateSchema } from 'prisma-prime';
 
 const User = model('User', t => {
   t.id();
@@ -43,7 +43,7 @@ const Comment = model('Comment', t => {
 const schema = generateSchema({
   datasource: {
     provider: 'postgresql',
-    url: process.env.DATABASE_URL || 'postgresql://user@localhost:5432/prismr',
+    url: process.env.DATABASE_URL || 'postgresql://user@localhost:5432/prisma-prime',
   },
   generator: {
     provider: 'prisma-client-js',

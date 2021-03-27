@@ -5,21 +5,23 @@ type SchemaRecord = {
   fieldType: string;
   existingModifiers: string[];
   key?: ModifierKey;
+  value?: unknown;
 };
 
 type ModifierMap = {
-  [key in ModifierKey]?: string;
+  [key in ModifierKey]?: (value?: unknown) => string;
 };
 
 const modifierKeyToSchemaAttribute: ModifierMap = {
-  primary: '@id',
-  unique: '@unique',
+  primary: () => ' @id',
+  unique: () => ' @unique',
+  default: value => ` @default(${value})`,
 };
 
 const typeModifiers = {
   optional: (type: string) => `${type}?`,
   list: (type: string) => `${type}[]`,
-  default: (type: string) => type,
+  base: (type: string) => type,
 };
 
 const modifier = ({
@@ -27,25 +29,29 @@ const modifier = ({
   fieldType: type,
   existingModifiers: additionalModifiers,
   key,
+  value,
 }: SchemaRecord) => {
   const typeModifierKey = key as keyof typeof typeModifiers;
   const typeModifier = typeModifiers[typeModifierKey]
     ? typeModifiers[typeModifierKey]
-    : typeModifiers.default;
+    : typeModifiers.base;
   const fieldType = typeModifier(type);
   const existingModifiers = additionalModifiers.length
     ? ` ${additionalModifiers.join(' ')}`
     : '';
   const modifierMapKey = key as keyof ModifierMap;
-  const schemaAttribute = modifierKeyToSchemaAttribute[modifierMapKey]
-    ? ` ${modifierKeyToSchemaAttribute[modifierMapKey]}`
-    : '';
+  const modifierMapFn = modifierKeyToSchemaAttribute[modifierMapKey];
+  const schemaAttribute = `${modifierMapFn?.(value) ?? ''}`;
 
   return `${fieldName} ${fieldType}${existingModifiers}${schemaAttribute}`;
 };
 
-export const generateModifier = (fieldSchema: string, key: ModifierKey) => {
+export const generateModifier = (
+  fieldSchema: string,
+  key: ModifierKey,
+  value?: unknown
+) => {
   const [fieldName, fieldType, ...existingModifiers] = fieldSchema.split(' ');
 
-  return modifier({ fieldName, fieldType, existingModifiers, key });
+  return modifier({ fieldName, fieldType, existingModifiers, key, value });
 };

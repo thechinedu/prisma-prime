@@ -6,6 +6,14 @@ type XOR<T, U> = T | U extends object
   ? (Without<T, U> & U) | (Without<U, T> & T)
   : T | U;
 
+export type DefaultAttributeFunctions = {
+  autoincrement: () => string;
+  dbgenerated: (value?: string) => string;
+  cuid: () => string;
+  uuid: () => string;
+  now: () => string;
+};
+
 export enum Defaults {
   autoincrement = 'autoincrement',
   dbgenerated = 'dbgenerated',
@@ -23,6 +31,7 @@ type OptionalModifier = {
    * When set to true, the primary modifier should be false or not defined
    */
   unique?: boolean;
+  primary?: false;
 };
 
 type PrimaryModifier = {
@@ -38,7 +47,9 @@ export type IntModifiers = XOR<PrimaryModifier, OptionalModifier> & {
   default?: number | Defaults.autoincrement | Defaults.dbgenerated;
 };
 
-export type Modifiers = PrimaryModifier | OptionalModifier;
+export type Modifiers = XOR<PrimaryModifier, OptionalModifier> & {
+  default?: boolean | number | string;
+};
 
 export type ModifierKey = keyof Modifiers;
 

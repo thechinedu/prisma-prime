@@ -6,14 +6,6 @@ type XOR<T, U> = T | U extends object
   ? (Without<T, U> & U) | (Without<U, T> & T)
   : T | U;
 
-export type DefaultAttributeFunctions = {
-  autoincrement: () => string;
-  dbgenerated: (value?: string) => string;
-  cuid: () => string;
-  uuid: () => string;
-  now: () => string;
-};
-
 export enum Defaults {
   autoincrement = 'autoincrement',
   dbgenerated = 'dbgenerated',

@@ -10,6 +10,7 @@ import { intImpl } from './int';
 import { jsonImpl } from './json';
 import { rawImpl } from './raw';
 import { stringImpl } from './string';
+import { timestampsImpl } from './timestamps';
 
 export const populateFields = (fields: Fields): FieldTypes => ({
   bigInt: (name, modifiers) => bigIntImpl(fields, name, modifiers),
@@ -23,4 +24,5 @@ export const populateFields = (fields: Fields): FieldTypes => ({
   json: (name, modifiers) => jsonImpl(fields, name, modifiers),
   raw: fieldSchema => rawImpl(fields, fieldSchema),
   string: (name, modifiers) => stringImpl(fields, name, modifiers),
+  timestamps: () => timestampsImpl(fields),
 });

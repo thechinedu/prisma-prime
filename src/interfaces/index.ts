@@ -73,7 +73,7 @@ export type ModifierKey = keyof Modifiers;
 
 type FieldType<M = Modifiers> = (name: string, modifiers?: M) => void;
 type RawType = (rawString: string) => void;
-type IDType = () => void;
+type HelperType = () => void;
 
 export type FieldTypes = {
   bigInt: FieldType;
@@ -82,12 +82,13 @@ export type FieldTypes = {
   datetime: FieldType<DateTimeModifiers>;
   decimal: FieldType;
   float: FieldType;
-  id: IDType;
+  id: HelperType;
   int: FieldType<IntModifiers>;
   json: FieldType;
   /** The raw type allows directly specifying a schema field in the PSL format */
   raw: RawType;
   string: FieldType<StringModifiers>;
+  timestamps: HelperType;
 };
 
 export type Fields = {

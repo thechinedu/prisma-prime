@@ -35,31 +35,39 @@ type PrimaryModifier = {
   optional?: false;
 };
 
-export type IntModifiers = XOR<PrimaryModifier, OptionalModifier> & {
-  default?: number | Defaults.autoincrement | Defaults.dbgenerated;
-};
-
 export type Modifiers = XOR<PrimaryModifier, OptionalModifier> & {
   default?: boolean | number | string;
 };
 
+export type IntModifiers = Modifiers & {
+  default?: number | Defaults.autoincrement | Defaults.dbgenerated;
+};
+
+export type StringModifiers = Modifiers & {
+  default?: string | Defaults.cuid | Defaults.dbgenerated | Defaults.uuid;
+};
+
+export type DateTimeModifiers = Modifiers & {
+  default?: Date | string | Defaults.now;
+};
+
 export type ModifierKey = keyof Modifiers;
 
-export type FieldType<M = Modifiers> = (name: string, modifiers?: M) => void;
+type FieldType<M = Modifiers> = (name: string, modifiers?: M) => void;
 export type RawType = (rawString: string) => void;
 
 export type FieldTypes = {
   bigInt: FieldType;
   boolean: FieldType;
   bytes: FieldType;
-  datetime: FieldType;
+  datetime: FieldType<DateTimeModifiers>;
   decimal: FieldType;
   float: FieldType;
   int: FieldType<IntModifiers>;
   json: FieldType;
   /** The raw type allows directly specifying a schema field in the PSL format */
   raw: RawType;
-  string: FieldType;
+  string: FieldType<StringModifiers>;
 };
 
 export type Fields = {

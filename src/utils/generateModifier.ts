@@ -16,6 +16,7 @@ const modifierKeyToSchemaAttribute: ModifierMap = {
   primary: () => ' @id',
   unique: () => ' @unique',
   default: value => ` @default(${value})`,
+  updatedAt: () => ` @updatedAt`,
 };
 
 const typeModifiers = {

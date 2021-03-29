@@ -24,6 +24,7 @@ type OptionalModifier = {
    */
   unique?: boolean;
   primary?: false;
+  list?: false;
 };
 
 type PrimaryModifier = {
@@ -33,10 +34,27 @@ type PrimaryModifier = {
   primary?: true;
   unique?: false;
   optional?: false;
+  list?: false;
 };
 
-export type Modifiers = XOR<PrimaryModifier, OptionalModifier> & {
+type ListModifier = {
+  /**
+   * When set to true, the primary and optional modifier should be false or not defined
+   */
+  list?: true;
+  primary?: false;
+  optional?: false;
+  unique?: boolean;
+};
+
+type PrimaryXOROptional = XOR<PrimaryModifier, OptionalModifier>;
+type PrimaryXORList = XOR<PrimaryModifier, ListModifier>;
+type OptionalXORList = XOR<OptionalModifier, ListModifier>;
+type ExclusiveModifiers = OptionalXORList | PrimaryXORList | PrimaryXOROptional;
+
+export type Modifiers = ExclusiveModifiers & {
   default?: boolean | number | string;
+  updatedAt?: boolean;
 };
 
 export type IntModifiers = Modifiers & {

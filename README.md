@@ -43,7 +43,9 @@ const Comment = model('Comment', t => {
 const schema = generateSchema({
   datasource: {
     provider: 'postgresql',
-    url: process.env.DATABASE_URL || 'postgresql://user@localhost:5432/prisma-prime',
+    url:
+      process.env.DATABASE_URL ||
+      'postgresql://user@localhost:5432/prisma-prime',
   },
   generator: {
     provider: 'prisma-client-js',

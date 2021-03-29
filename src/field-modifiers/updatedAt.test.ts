@@ -1,6 +1,6 @@
 import { updatedAt } from './updatedAt';
 
-describe('Optional field modifier', () => {
+describe('UpdatedAt field modifier', () => {
   it('marks a field with the updatedAt attribute in the field schema if the field is set to true', () => {
     expect(updatedAt('name String', true)).toBe('name String @updatedAt');
   });

@@ -1,6 +1,6 @@
 import { list } from './list';
 
-describe('Optional field modifier', () => {
+describe('List field modifier', () => {
   it('marks a field as a list in the field schema if the field is set to true', () => {
     expect(list('name String', true)).toBe('name String[]');
   });

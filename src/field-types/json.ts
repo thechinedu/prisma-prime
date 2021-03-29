@@ -1,5 +1,5 @@
 import { Fields, Modifiers } from '../interfaces';
-import { fieldModifiers } from '../field-modifiers';
+import { fieldModifierFns } from '../field-modifiers';
 import { generateFieldSchema } from '../utils';
 
 export const jsonImpl = (
@@ -13,7 +13,7 @@ export const jsonImpl = (
     [name]: {
       type: fieldType,
       ...modifiers,
-      fieldSchema: generateFieldSchema(fieldModifiers)(
+      fieldSchema: generateFieldSchema(fieldModifierFns)(
         name,
         fieldType,
         modifiers

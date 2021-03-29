@@ -1,11 +1,11 @@
-import { Fields, Modifiers } from '../interfaces';
-import { fieldModifiers } from '../field-modifiers';
+import { Fields, StringModifiers } from '../interfaces';
+import { fieldModifierFns } from '../field-modifiers';
 import { generateFieldSchema } from '../utils';
 
 export const stringImpl = (
   fields: Fields,
   name: string,
-  modifiers?: Modifiers
+  modifiers?: StringModifiers
 ) => {
   const fieldType = 'String';
 
@@ -13,7 +13,7 @@ export const stringImpl = (
     [name]: {
       type: fieldType,
       ...modifiers,
-      fieldSchema: generateFieldSchema(fieldModifiers)(
+      fieldSchema: generateFieldSchema(fieldModifierFns)(
         name,
         fieldType,
         modifiers

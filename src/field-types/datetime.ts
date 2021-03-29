@@ -1,11 +1,11 @@
-import { Fields, Modifiers } from '../interfaces';
-import { fieldModifiers } from '../field-modifiers';
+import { Fields, DateTimeModifiers } from '../interfaces';
+import { fieldModifierFns } from '../field-modifiers';
 import { generateFieldSchema } from '../utils';
 
 export const datetimeImpl = (
   fields: Fields,
   name: string,
-  modifiers?: Modifiers
+  modifiers?: DateTimeModifiers
 ) => {
   const fieldType = 'DateTime';
 
@@ -13,7 +13,7 @@ export const datetimeImpl = (
     [name]: {
       type: fieldType,
       ...modifiers,
-      fieldSchema: generateFieldSchema(fieldModifiers)(
+      fieldSchema: generateFieldSchema(fieldModifierFns)(
         name,
         fieldType,
         modifiers

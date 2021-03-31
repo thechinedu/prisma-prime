@@ -21,17 +21,11 @@ describe('Default field modifier', () => {
   });
 
   it('defines a default value for a field for with datetime type', () => {
-    expect(fieldDefault('createdAt DateTime', new Date('March 29, 2021'))).toBe(
-      'createdAt DateTime @default("2021-03-28T23:00:00.000Z")'
-    );
-    expect(
-      fieldDefault('createdAt DateTime', new Date('March 29, 2021 20:45:00'))
-    ).toBe('createdAt DateTime @default("2021-03-29T19:45:00.000Z")');
-    expect(fieldDefault('createdAt DateTime', new Date(1616972400000))).toBe(
-      'createdAt DateTime @default("2021-03-28T23:00:00.000Z")'
-    );
     expect(fieldDefault('createdAt DateTime', '2021-03-28T23:00:00.000Z')).toBe(
       'createdAt DateTime @default("2021-03-28T23:00:00.000Z")'
+    );
+    expect(fieldDefault('createdAt DateTime', 'now()')).toBe(
+      'createdAt DateTime @default(now())'
     );
   });
 });

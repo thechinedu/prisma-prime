@@ -66,7 +66,11 @@ export type StringModifiers = Modifiers & {
 };
 
 export type DateTimeModifiers = Modifiers & {
-  default?: Date | string | Defaults.now;
+  /**
+   * Date strings should be formatted using the ISO-8601 standard.
+   * They must include the time including the time offsets from UTC
+   */
+  default?: string | Defaults.now;
 };
 
 export type ModifierKey = keyof Modifiers;

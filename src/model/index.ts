@@ -1,7 +1,7 @@
-import { ModelDefinition, ModelFunc } from '../interfaces';
+import { ModelDefinition, ModelFn } from '../interfaces';
 import { populateFields } from '../field-types';
 
-export const model: ModelFunc = (name: string, definition: ModelDefinition) => {
+export const model: ModelFn = (name: string, definition: ModelDefinition) => {
   const fields = {};
 
   definition(populateFields(fields));
@@ -9,9 +9,3 @@ export const model: ModelFunc = (name: string, definition: ModelDefinition) => {
   // TODO: deep freeze the object to prevent external modification
   return { name, fields };
 };
-
-const example = model('User', t => {
-  t.int('id', { default: 1, updatedAt: true });
-});
-
-console.log(example);

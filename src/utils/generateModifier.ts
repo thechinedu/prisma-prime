@@ -1,4 +1,4 @@
-import { ModifierKey } from '../interfaces';
+import { ModifierKey, RelationModifiers } from '../interfaces';
 
 type SchemaRecord = {
   fieldName: string;
@@ -17,6 +17,24 @@ const modifierKeyToSchemaAttribute: ModifierMap = {
   unique: () => ' @unique',
   default: value => ` @default(${value})`,
   updatedAt: () => ` @updatedAt`,
+  relation: value => {
+    const relationValue = (value as unknown) as Omit<
+      RelationModifiers,
+      'source'
+    >;
+    const name = relationValue.name ? `name: "${relationValue.name}"` : '';
+    const fields = relationValue.fields
+      ? `fields: [${relationValue.fields}]`
+      : '';
+    const references = relationValue.references
+      ? `references: [${relationValue.references}]`
+      : '';
+    const relationArgs = [name, fields, references].filter(Boolean).join(', ');
+
+    if (!relationArgs) return '';
+
+    return ` @relation(${relationArgs})`;
+  },
 };
 
 const typeModifiers = {

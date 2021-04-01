@@ -73,11 +73,25 @@ export type DateTimeModifiers = Modifiers & {
   default?: string | Defaults.now;
 };
 
-export type ModifierKey = keyof Modifiers;
+export type RelationModifiers = XOR<
+  Omit<OptionalModifier, 'primary' | 'unique'>,
+  Omit<ListModifier, 'primary' | 'unique'>
+> & {
+  /**
+   * String literal matching the name of the model
+   */
+  source: string;
+  fields?: string[];
+  references?: string[];
+  name?: string;
+};
+
+export type ModifierKey = keyof Modifiers | 'relation';
 
 type FieldType<M = Modifiers> = (name: string, modifiers?: M) => void;
 type RawType = (rawString: string) => void;
 type HelperType = () => void;
+type RelationType = (name: string, modifiers: RelationModifiers) => void;
 
 export type FieldTypes = {
   bigInt: FieldType;
@@ -91,18 +105,25 @@ export type FieldTypes = {
   json: FieldType;
   /** The raw type allows directly specifying a schema field in the PSL format */
   raw: RawType;
+  relation: RelationType;
   string: FieldType<StringModifiers>;
   timestamps: HelperType;
 };
 
 export type Fields = {
-  [key: string]: Modifiers & {
+  [key: string]: (
+    | Modifiers
+    | IntModifiers
+    | StringModifiers
+    | DateTimeModifiers
+    | RelationModifiers
+  ) & {
     type: string;
     fieldSchema: string;
   };
 };
 
-export type ModelFunc = (
+export type ModelFn = (
   modelName: string,
   fieldDefinition: ModelDefinition
 ) => Model;

@@ -1,10 +1,10 @@
 import { Modifiers, ModifierKey } from '../interfaces';
 
-type FieldModifiers = {
-  [key in ModifierKey]: (fieldSchema: string, fieldValue?: any) => string;
+type FieldModifierFns = {
+  [key in ModifierKey]: (fieldSchema: string, fieldValue: any) => string;
 };
 
-export const generateFieldSchema = (fieldModifiers: FieldModifiers) => (
+export const generateFieldSchema = (fieldModifierFns: FieldModifierFns) => (
   name: string,
   type: string,
   modifiers: Modifiers = {}
@@ -12,9 +12,11 @@ export const generateFieldSchema = (fieldModifiers: FieldModifiers) => (
   let res = `${name} ${type}`;
 
   for (let [key, value] of Object.entries(modifiers)) {
+    if (value == null) continue;
+
     let modifier = key as ModifierKey;
 
-    res = fieldModifiers[modifier](res, value);
+    res = fieldModifierFns[modifier](res, value);
   }
 
   return res;

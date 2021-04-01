@@ -9,6 +9,7 @@ import { idImpl } from './id';
 import { intImpl } from './int';
 import { jsonImpl } from './json';
 import { rawImpl } from './raw';
+import { relationImpl } from './relation';
 import { stringImpl } from './string';
 import { timestampsImpl } from './timestamps';
 
@@ -23,6 +24,7 @@ export const populateFields = (fields: Fields): FieldTypes => ({
   int: (name, modifiers) => intImpl(fields, name, modifiers),
   json: (name, modifiers) => jsonImpl(fields, name, modifiers),
   raw: fieldSchema => rawImpl(fields, fieldSchema),
+  relation: (name, modifiers) => relationImpl(fields, name, modifiers),
   string: (name, modifiers) => stringImpl(fields, name, modifiers),
   timestamps: () => timestampsImpl(fields),
 });

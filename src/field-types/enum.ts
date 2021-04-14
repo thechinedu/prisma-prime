@@ -1,13 +1,14 @@
-import { Fields, NumberModifiers } from '../interfaces';
+import { Fields, EnumModifiers, Enum } from '../interfaces';
 import { fieldModifierFns } from '../field-modifiers';
 import { generateFieldSchema } from '../utils';
 
-export const intImpl = (
+export const enumImpl = (
   fields: Fields,
   name: string,
-  modifiers?: NumberModifiers
+  modifiers: EnumModifiers
 ) => {
-  const fieldType = 'Int';
+  const fieldType =
+    (modifiers.source as Enum)?.name || (modifiers.source as string);
 
   Object.assign(fields, {
     [name]: {
@@ -16,7 +17,7 @@ export const intImpl = (
       fieldSchema: generateFieldSchema(fieldModifierFns)(
         name,
         fieldType,
-        modifiers
+        Object.assign(modifiers, { source: null })
       ),
     },
   });

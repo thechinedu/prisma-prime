@@ -4,6 +4,7 @@ import { booleanImpl } from './boolean';
 import { bytesImpl } from './bytes';
 import { datetimeImpl } from './datetime';
 import { decimalImpl } from './decimal';
+import { enumImpl } from './enum';
 import { floatImpl } from './float';
 import { idImpl } from './id';
 import { intImpl } from './int';
@@ -19,6 +20,7 @@ export const populateFields = (fields: Fields): FieldTypes => ({
   bytes: (name, modifiers) => bytesImpl(fields, name, modifiers),
   datetime: (name, modifiers) => datetimeImpl(fields, name, modifiers),
   decimal: (name, modifiers) => decimalImpl(fields, name, modifiers),
+  enum: (name, modifiers) => enumImpl(fields, name, modifiers),
   float: (name, modifiers) => floatImpl(fields, name, modifiers),
   id: () => idImpl(fields),
   int: (name, modifiers) => intImpl(fields, name, modifiers),

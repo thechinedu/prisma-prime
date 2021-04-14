@@ -1,11 +1,11 @@
-import { Fields, Modifiers } from '../interfaces';
+import { Fields, NumberModifiers } from '../interfaces';
 import { fieldModifierFns } from '../field-modifiers';
 import { generateFieldSchema } from '../utils';
 
 export const decimalImpl = (
   fields: Fields,
   name: string,
-  modifiers?: Modifiers
+  modifiers?: NumberModifiers
 ) => {
   const fieldType = 'Decimal';
 

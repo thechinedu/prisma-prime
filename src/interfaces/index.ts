@@ -57,7 +57,7 @@ export type Modifiers = ExclusiveModifiers & {
   updatedAt?: boolean;
 };
 
-export type IntModifiers = Modifiers & {
+export type NumberModifiers = Modifiers & {
   default?: number | Defaults.autoincrement | Defaults.dbgenerated;
 };
 
@@ -86,37 +86,56 @@ export type RelationModifiers = XOR<
   name?: string;
 };
 
+export type EnumModifiers = Modifiers & {
+  /**
+   * String literal matching a value in the enum
+   */
+  default?: string;
+  /**
+   * When specifying a string literal, ensure it matches the name of the enum
+   */
+  source: Enum | string;
+};
+
 export type ModifierKey = keyof Modifiers | 'relation';
 
-type FieldType<M = Modifiers> = (name: string, modifiers?: M) => void;
+type FieldTypeWithOptionalModifiers<M = Modifiers> = (
+  name: string,
+  modifiers?: M
+) => void;
+type FieldTypeWithRequiredModifiers<M = Modifiers> = (
+  name: string,
+  modifiers: M
+) => void;
 type RawType = (rawString: string) => void;
 type HelperType = () => void;
-type RelationType = (name: string, modifiers: RelationModifiers) => void;
 
 export type FieldTypes = {
-  bigInt: FieldType;
-  boolean: FieldType;
-  bytes: FieldType;
-  datetime: FieldType<DateTimeModifiers>;
-  decimal: FieldType;
-  float: FieldType;
+  bigInt: FieldTypeWithOptionalModifiers<NumberModifiers>;
+  boolean: FieldTypeWithOptionalModifiers;
+  bytes: FieldTypeWithOptionalModifiers;
+  datetime: FieldTypeWithOptionalModifiers<DateTimeModifiers>;
+  decimal: FieldTypeWithOptionalModifiers<NumberModifiers>;
+  enum: FieldTypeWithRequiredModifiers<EnumModifiers>;
+  float: FieldTypeWithOptionalModifiers<NumberModifiers>;
   id: HelperType;
-  int: FieldType<IntModifiers>;
-  json: FieldType;
+  int: FieldTypeWithOptionalModifiers<NumberModifiers>;
+  json: FieldTypeWithOptionalModifiers;
   /** The raw type allows directly specifying a schema field in the PSL format */
   raw: RawType;
-  relation: RelationType;
-  string: FieldType<StringModifiers>;
+  relation: FieldTypeWithRequiredModifiers<RelationModifiers>;
+  string: FieldTypeWithOptionalModifiers<StringModifiers>;
   timestamps: HelperType;
 };
 
 export type Fields = {
   [key: string]: (
     | Modifiers
-    | IntModifiers
+    | NumberModifiers
     | StringModifiers
     | DateTimeModifiers
     | RelationModifiers
+    | EnumModifiers
   ) & {
     type: string;
     fieldSchema: string;
@@ -134,3 +153,9 @@ export type Model = {
 };
 
 export type ModelDefinition = (fieldTypes: FieldTypes) => void;
+
+export type Enum = {
+  name: string;
+  toSchema: string;
+  [key: string]: string;
+};

@@ -1,18 +1,7 @@
 import { Fields } from '../interfaces';
-import { fieldModifierFns } from '../field-modifiers';
-import { generateFieldSchema } from '../utils';
 import { autoincrement } from '../attribute-fns';
+import { intImpl } from './int';
 
 export const idImpl = (fields: Fields) => {
-  const fieldType = 'Int';
-
-  Object.assign(fields, {
-    id: {
-      type: fieldType,
-      fieldSchema: generateFieldSchema(fieldModifierFns)('id', fieldType, {
-        primary: true,
-        default: autoincrement(),
-      }),
-    },
-  });
+  intImpl(fields, 'id', { primary: true, default: autoincrement() });
 };

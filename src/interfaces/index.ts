@@ -111,6 +111,7 @@ type RawType = (rawString: string) => void;
 type HelperType = () => void;
 
 export type FieldTypes = {
+  belongsTo: FieldTypeWithRequiredModifiers<Pick<RelationModifiers, 'source'>>;
   bigInt: FieldTypeWithOptionalModifiers<NumberModifiers>;
   boolean: FieldTypeWithOptionalModifiers;
   bytes: FieldTypeWithOptionalModifiers;
@@ -118,6 +119,8 @@ export type FieldTypes = {
   decimal: FieldTypeWithOptionalModifiers<NumberModifiers>;
   enum: FieldTypeWithRequiredModifiers<EnumModifiers>;
   float: FieldTypeWithOptionalModifiers<NumberModifiers>;
+  hasMany: FieldTypeWithRequiredModifiers<Pick<RelationModifiers, 'source'>>;
+  hasOne: FieldTypeWithRequiredModifiers<Pick<RelationModifiers, 'source'>>;
   id: HelperType;
   int: FieldTypeWithOptionalModifiers<NumberModifiers>;
   json: FieldTypeWithOptionalModifiers;

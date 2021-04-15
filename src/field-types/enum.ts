@@ -9,16 +9,17 @@ export const enumImpl = (
 ) => {
   const fieldType =
     (modifiers.source as Enum)?.name || (modifiers.source as string);
+  const fieldSchema = generateFieldSchema(fieldModifierFns)(
+    name,
+    fieldType,
+    Object.assign(modifiers, { source: null })
+  ).replace(/["']/g, '');
 
   Object.assign(fields, {
     [name]: {
       type: fieldType,
       ...modifiers,
-      fieldSchema: generateFieldSchema(fieldModifierFns)(
-        name,
-        fieldType,
-        Object.assign(modifiers, { source: null })
-      ),
+      fieldSchema,
     },
   });
 };

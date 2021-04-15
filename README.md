@@ -11,15 +11,8 @@ This project is still in active development and not recommended for use in a pro
 Example:
 
 ```ts
-import { model, generateSchema } from 'prisma-prime';
-
-const User = model('User', t => {
-  t.id();
-  t.string('fullName');
-  t.string('email', { unique: true });
-  t.hasMany('posts', { model: Post });
-  t.timestamps();
-});
+// db/models/Post.ts
+import { model } from 'prisma-prime';
 
 const Post = model('Post', t => {
   t.id();
@@ -27,18 +20,38 @@ const Post = model('Post', t => {
   t.boolean('draft');
   t.string('categories', { list: true });
   t.string('slug', { unique: true });
-  t.hasOne('author', { model: User });
-  t.hasMany('comments', { model: Comment });
+  t.hasOne('author', { source: 'User' });
+  t.hasMany('comments', { source: 'Comment' });
   t.timestamps();
   t.uniqueScope('title', 'slug');
 });
 
+// db/models/User.ts
+import { model, enumType } from 'prisma-prime';
+
+const Role = enumType('Role', ['USER', 'ADMIN']);
+
+const User = model('User', t => {
+  t.id();
+  t.string('fullName');
+  t.string('email', { unique: true });
+  t.enum('role', { source: Role });
+  t.hasMany('posts', { source: 'Post' });
+  t.timestamps();
+});
+
+// db/models/Comment.ts
+import { model } from 'prisma-prime';
+
 const Comment = model('Comment', t => {
   t.id();
   t.string('content');
-  t.belongsTo('post', { model: Post });
+  t.belongsTo('post', { source: 'Post' });
   t.timestamps();
 });
+
+// db/models/schema.ts
+import { generateSchema } from 'prisma-prime';
 
 const schema = generateSchema({
   datasource: {

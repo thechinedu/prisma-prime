@@ -162,3 +162,71 @@ export type Enum = {
   toSchema: string;
   [key: string]: string;
 };
+
+type BinaryTargets =
+  | 'native'
+  | 'darwin'
+  | 'windows'
+  | 'linux-musl'
+  | 'debian-openssl-1.0.x'
+  | 'debian-openssl-1.1.x'
+  | 'rhel-openssl-1.0.x'
+  | 'rhel-openssl-1.1.x'
+  | 'linux-arm-openssl-1.0.x'
+  | 'linux-arm-openssl-1.1.x';
+
+export type SchemaConfig = {
+  /**
+   * Definitions for the datasource block in the prisma schema
+   */
+  datasource: {
+    /**
+     * Define the data source connector to use
+     */
+    provider: 'postgresql' | 'mysql' | 'sqlite' | 'sqlserver';
+    url: string;
+    shadowDatabaseUrl?: string;
+  };
+  /**
+   * Definitions for the prisma client generator block in the prisma schema
+   */
+  generator: {
+    /**
+     * Describes which generator to use.
+     * This can point to a file that implements a generator
+     * or specify a built-in generator directly.
+     * It is set to "prisma-client-js" by default.
+     */
+    provider?: string;
+    /**
+     * File path indicating the location of the generated client.
+     * It is set to "node_modules/@prisma/client" by default
+     */
+    output?: string;
+    /**
+     * Specify the OS on which the prisma client will run.
+     * It is set to ["native"] by default
+     */
+    binaryTargets?: BinaryTargets[];
+    /**
+     * Use intellisense to see list of currently available preview features
+     */
+    previewFeatures?: string[];
+  };
+  /**
+   * An object specifying all the models that should be added to the prisma schema.
+   * By default, all models are added
+   */
+  models?: Record<string, Model>;
+  /**
+   * An object specifying all the enums that should be added to the prisma schema.
+   * By default, all enums are added
+   */
+  enums?: Record<string, Enum>;
+  /**
+   * File path indicating where the generated prisma schema should be saved.
+   * If the prisma schema path is specified in package.json, it'll use the specified path by default.
+   * Otherwise, It is saved to /prisma/prisma.schema by default.
+   */
+  schemaOutput?: string;
+};

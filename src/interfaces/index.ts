@@ -153,6 +153,7 @@ export type ModelFn = (
 export type Model = {
   name: string;
   fields: Fields;
+  modelSchema: string;
 };
 
 export type ModelDefinition = (fieldTypes: FieldTypes) => void;
@@ -190,7 +191,7 @@ export type SchemaConfig = {
   /**
    * Definitions for the prisma client generator block in the prisma schema
    */
-  generator: {
+  generator?: {
     /**
      * Describes which generator to use.
      * This can point to a file that implements a generator
@@ -217,7 +218,7 @@ export type SchemaConfig = {
    * An object specifying all the models that should be added to the prisma schema.
    * By default, all models are added
    */
-  models?: Record<string, Model>;
+  models: Record<string, Model>;
   /**
    * An object specifying all the enums that should be added to the prisma schema.
    * By default, all enums are added

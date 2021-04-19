@@ -6,7 +6,9 @@ export const generateSchema = ({
     provider: generatorProvider = 'generator-client-js',
     output = '',
     binaryTargets = [],
-  },
+    previewFeatures = [],
+  } = {},
+  models,
 }: SchemaConfig) => {
   const datasource = `datasource db {
     provider = "${datasourceProvider}"
@@ -15,7 +17,20 @@ export const generateSchema = ({
   }`;
   const generator = `generator client {
     provider = "${generatorProvider}"${output && `\noutput = "${output}"`}${
+    binaryTargets.length
+      ? `\nbinaryTargets = ${JSON.stringify(binaryTargets)}`
+      : ''
+  }${
+    previewFeatures.length
+      ? `\previewFeatures = ${JSON.stringify(previewFeatures)}`
+      : ''
   }
   }`;
-  const schema = `${datasource}${generator}`;
+  let schema = `${datasource}\n${generator}\n`;
+
+  for (const [_, value] of Object.entries(models)) {
+    schema += `${value.modelSchema}\n`;
+  }
+
+  return schema;
 };

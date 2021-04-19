@@ -1,11 +1,20 @@
-import { ModelDefinition, ModelFn } from '../interfaces';
+import { ModelDefinition, ModelFn, Fields } from '../interfaces';
 import { populateFields } from '../field-types';
 
 export const model: ModelFn = (name: string, definition: ModelDefinition) => {
-  const fields = {};
+  const fields: Fields = {};
 
   definition(populateFields(fields));
+  let schema = '';
+
+  for (const value of Object.values(fields)) {
+    schema += `${value.fieldSchema}\n`;
+  }
+
+  const modelSchema = `model ${name} {
+    ${schema}
+  }`;
 
   // TODO: deep freeze the object to prevent external modification
-  return { name, fields };
+  return { name, fields, modelSchema };
 };

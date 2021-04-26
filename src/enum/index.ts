@@ -5,9 +5,11 @@ export const enumType = (name: string, keys: string[]): Enum => {
 
   for (const key of keys) fields[key] = key;
 
-  return {
+  const res = {
     name,
     ...fields,
-    toSchema: `enum ${name} {\n${keys.join('\t\n')}\n}`,
+    toSchema: `enum ${name} {\n${keys.join('\n')}\n}`,
   };
+
+  return res;
 };

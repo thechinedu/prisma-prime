@@ -1,5 +1,21 @@
 import { SchemaConfig } from '../interfaces';
 
+/**
+ *
+ * Next steps:
+ * Generate schema output, run prisma format on it and save to file system
+ *
+ *  File to save to:
+ *    If path is specified, use the specified path.
+ *
+ *    otherwise:
+ *    Read from package json (of the project using prisma-prime) and check to see if a path
+ *    to the prisma schema has been set. If it has been set, use it as the schema output
+ *
+ *    otherwise:
+ *    Save to prisma/prisma.schema
+ */
+
 export const generateSchema = ({
   datasource: { provider: datasourceProvider, url, shadowDatabaseUrl = '' },
   generator: {
@@ -9,6 +25,7 @@ export const generateSchema = ({
     previewFeatures = [],
   } = {},
   models,
+  enums = {},
 }: SchemaConfig) => {
   const datasource = `datasource db {
     provider = "${datasourceProvider}"
@@ -28,8 +45,20 @@ export const generateSchema = ({
   }`;
   let schema = `${datasource}\n${generator}\n`;
 
-  for (const [_, value] of Object.entries(models)) {
-    schema += `${value.modelSchema}\n`;
+  schema = buildSchemaFromRecord(models, schema);
+  schema = buildSchemaFromRecord(enums, schema);
+
+  console.log({ dirname: __dirname, cwd: process.cwd() });
+
+  return schema;
+};
+
+const buildSchemaFromRecord = (
+  record: Record<string, { toSchema: string }>,
+  schema: string
+) => {
+  for (const [_, value] of Object.entries(record)) {
+    schema += `${value.toSchema}\n`;
   }
 
   return schema;

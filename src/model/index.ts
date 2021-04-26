@@ -11,10 +11,10 @@ export const model: ModelFn = (name: string, definition: ModelDefinition) => {
     schema += `${value.fieldSchema}\n`;
   }
 
-  const modelSchema = `model ${name} {
+  const toSchema = `model ${name} {
     ${schema}
   }`;
 
   // TODO: deep freeze the object to prevent external modification
-  return { name, fields, modelSchema };
+  return { name, fields, toSchema };
 };

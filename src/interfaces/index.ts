@@ -153,7 +153,7 @@ export type ModelFn = (
 export type Model = {
   name: string;
   fields: Fields;
-  modelSchema: string;
+  toSchema: string;
 };
 
 export type ModelDefinition = (fieldTypes: FieldTypes) => void;
@@ -216,12 +216,10 @@ export type SchemaConfig = {
   };
   /**
    * An object specifying all the models that should be added to the prisma schema.
-   * By default, all models are added
    */
   models: Record<string, Model>;
   /**
    * An object specifying all the enums that should be added to the prisma schema.
-   * By default, all enums are added
    */
   enums?: Record<string, Enum>;
   /**

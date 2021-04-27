@@ -7,9 +7,10 @@ export const model: ModelFn = (name: string, definition: ModelDefinition) => {
   definition(populateFields(fields));
   let schema = '';
 
-  for (const value of Object.values(fields)) {
-    schema += `${value.fieldSchema}\n`;
-  }
+  Object.values(fields).forEach((value, idx, arr) => {
+    if (idx === arr.length - 1) schema += `${value.fieldSchema}`;
+    else schema += `${value.fieldSchema}\n`;
+  });
 
   const toSchema = `model ${name} {
     ${schema}

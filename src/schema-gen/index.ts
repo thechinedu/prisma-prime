@@ -1,3 +1,7 @@
+import { formatSchema, getDMMF as validateSchema } from '@prisma/sdk';
+import { createReadStream } from 'fs';
+import { join } from 'path';
+
 import { SchemaConfig } from '../interfaces';
 
 /**
@@ -13,10 +17,10 @@ import { SchemaConfig } from '../interfaces';
  *    to the prisma schema has been set. If it has been set, use it as the schema output
  *
  *    otherwise:
- *    Save to prisma/prisma.schema
+ *    Save to prisma/schema.prisma
  */
 
-export const generateSchema = ({
+export const generateSchema = async ({
   datasource: { provider: datasourceProvider, url, shadowDatabaseUrl = '' },
   generator: {
     provider: generatorProvider = 'generator-client-js',
@@ -26,6 +30,7 @@ export const generateSchema = ({
   } = {},
   models,
   enums = {},
+  schemaOutput,
 }: SchemaConfig) => {
   const datasource = `datasource db {
     provider = "${datasourceProvider}"
@@ -44,14 +49,20 @@ export const generateSchema = ({
   }
   }`;
   let schema = `${datasource}\n${generator}\n`;
+  let schemaPath = schemaOutput;
 
   schema = buildSchemaFromRecord(models, schema);
   schema = buildSchemaFromRecord(enums, schema);
 
-  console.log({ dirname: __dirname, cwd: process.cwd() });
+  await validateSchema({ datamodel: schema }).catch(err => console.error(err));
+  schema = await formatSchema({ schema });
 
-  return schema;
+  if (!schemaPath) {
+    schemaPath = await getDefaultSchemaPath();
+  }
 };
+
+void formatSchema;
 
 const buildSchemaFromRecord = (
   record: Record<string, { toSchema: string }>,
@@ -62,4 +73,25 @@ const buildSchemaFromRecord = (
   }
 
   return schema;
+};
+
+const getDefaultSchemaPath = async (): Promise<string> => {
+  const packageJSONPath = join(process.cwd(), 'package.json');
+  const createReadStreamPromise = new Promise((resolve, reject) => {
+    const stream = createReadStream(packageJSONPath, { encoding: 'utf-8' });
+
+    stream.on('readable', () => {
+      const content = stream.read();
+
+      if (content) resolve(content);
+    });
+
+    stream.on('error', err => {
+      reject(err);
+    });
+  });
+
+  void createReadStreamPromise;
+
+  return '';
 };

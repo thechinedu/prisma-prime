@@ -4,22 +4,6 @@ import { join } from 'path';
 
 import { SchemaConfig } from '../interfaces';
 
-/**
- *
- * Next steps:
- * Generate schema output, run prisma format on it and save to file system
- *
- *  File to save to:
- *    If path is specified, use the specified path.
- *
- *    otherwise:
- *    Read from package json (of the project using prisma-prime) and check to see if a path
- *    to the prisma schema has been set. If it has been set, use it as the schema output
- *
- *    otherwise:
- *    Save to prisma/schema.prisma
- */
-
 export const generateSchema = async ({
   datasource: { provider: datasourceProvider, url, shadowDatabaseUrl = '' },
   generator: {
@@ -60,6 +44,8 @@ export const generateSchema = async ({
   if (!schemaPath) {
     schemaPath = await getDefaultSchemaPath();
   }
+
+  // Write to prisma schema
 };
 
 void formatSchema;
@@ -77,21 +63,22 @@ const buildSchemaFromRecord = (
 
 const getDefaultSchemaPath = async (): Promise<string> => {
   const packageJSONPath = join(process.cwd(), 'package.json');
-  const createReadStreamPromise = new Promise((resolve, reject) => {
+  const readPackageJson = new Promise((resolve, reject) => {
     const stream = createReadStream(packageJSONPath, { encoding: 'utf-8' });
 
     stream.on('readable', () => {
       const content = stream.read();
 
-      if (content) resolve(content);
+      if (content) resolve(JSON.parse(content));
     });
 
     stream.on('error', err => {
       reject(err);
     });
   });
+  const packageJsonContent: any = await readPackageJson;
+  let schemaPath: string =
+    packageJsonContent?.prisma?.schema || './prisma/schema.prisma';
 
-  void createReadStreamPromise;
-
-  return '';
+  return schemaPath;
 };

@@ -1,5 +1,5 @@
 import { formatSchema, getDMMF as validateSchema } from '@prisma/sdk';
-import { createReadStream } from 'fs';
+import { createReadStream, createWriteStream } from 'fs';
 import { join } from 'path';
 
 import { SchemaConfig } from '../interfaces';
@@ -37,6 +37,7 @@ export const generateSchema = async ({
 
   schema = buildSchemaFromRecord(models, schema);
   schema = buildSchemaFromRecord(enums, schema);
+  schema += '\n';
 
   await validateSchema({ datamodel: schema }).catch(err => console.error(err));
   schema = await formatSchema({ schema });
@@ -45,10 +46,8 @@ export const generateSchema = async ({
     schemaPath = await getDefaultSchemaPath();
   }
 
-  // Write to prisma schema
+  writeToSchemaPath(schemaPath, schema);
 };
-
-void formatSchema;
 
 const buildSchemaFromRecord = (
   record: Record<string, { toSchema: string }>,
@@ -80,5 +79,12 @@ const getDefaultSchemaPath = async (): Promise<string> => {
   let schemaPath: string =
     packageJsonContent?.prisma?.schema || './prisma/schema.prisma';
 
-  return schemaPath;
+  return join(process.cwd(), schemaPath);
+};
+
+const writeToSchemaPath = (schemaPath: string, schema: string) => {
+  const writable = createWriteStream(schemaPath, { encoding: 'utf-8' });
+  writable.write(schema);
+
+  writable.end();
 };

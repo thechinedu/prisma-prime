@@ -2,23 +2,27 @@
   "name": "prisma-prime",
   "version": "0.1.0",
   "author": "Chinedu Daniel",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thechinedu/prisma-prime"
+  },
   "description": "Prisma schema definition for JavaScript/TypeScript",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "engines": {
     "node": ">=10"
   },
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build",
+    "build": "tsdx build --target node --format cjs --name prime",
+    "postbuild": "node ./postbuild",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "prepare": "yarn build",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },

@@ -7,7 +7,7 @@ import { SchemaConfig } from '../interfaces';
 export const generateSchema = async ({
   datasource: { provider: datasourceProvider, url, shadowDatabaseUrl = '' },
   generator: {
-    provider: generatorProvider = 'generator-client-js',
+    provider: generatorProvider = 'prisma-client-js',
     output = '',
     binaryTargets = [],
     previewFeatures = [],

@@ -3,6 +3,7 @@ import { createReadStream, createWriteStream } from 'fs';
 import { join } from 'path';
 
 import { SchemaConfig } from '../interfaces';
+import { enquoteString } from '../utils';
 
 export const generateSchema = async ({
   datasource: { provider: datasourceProvider, url, shadowDatabaseUrl = '' },
@@ -18,7 +19,7 @@ export const generateSchema = async ({
 }: SchemaConfig) => {
   const datasource = `datasource db {
     provider = "${datasourceProvider}"
-    url = "${url}"${shadowDatabaseUrl &&
+    url = ${enquoteString(url)}${shadowDatabaseUrl &&
     `\nshadowDatabaseUrl = "${shadowDatabaseUrl}"`}
   }`;
   const generator = `generator client {
@@ -37,10 +38,10 @@ export const generateSchema = async ({
 
   schema = buildSchemaFromRecord(models, schema);
   schema = buildSchemaFromRecord(enums, schema);
-  schema += '\n';
 
   await validateSchema({ datamodel: schema }).catch(err => console.error(err));
   schema = await formatSchema({ schema });
+  schema += '\n';
 
   if (!schemaPath) {
     schemaPath = await getDefaultSchemaPath();

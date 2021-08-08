@@ -4,3 +4,4 @@ export { Defaults };
 export { enumType } from './enum';
 export { model } from './model';
 export { generateSchema } from './schema-gen';
+export { env } from './env';

@@ -4,6 +4,7 @@ const excludeList = [
   'dbgenerated()',
   'now()',
   'uuid()',
+  'env()',
 ];
 
 const isExcluded = (value: string) =>
